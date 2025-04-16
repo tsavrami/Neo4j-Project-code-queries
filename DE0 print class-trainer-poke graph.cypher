@@ -1,0 +1,1 @@
+match (c:`Trainer Class`)<-[r_c:IS_CLASS]-(t:Trainer)-[r_p:HAS_POKE]->(p) where p.Gen IN ['I', 'II', 'III', 'IV'] return c, t, p, r_c, r_p

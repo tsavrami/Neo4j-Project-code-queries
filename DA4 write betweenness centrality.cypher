@@ -4,12 +4,16 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 ////
-CALL gds.betweenness.write('pokemonTypeGraph', { writeProperty: 'betweenness' })
-YIELD centralityDistribution, nodePropertiesWritten
-RETURN centralityDistribution.min AS minimumScore, centralityDistribution.mean AS meanScore, nodePropertiesWritten;
-
-// Print the graph
-match (p: Pokemon)-[r: HAS_TYPE]->(t:`Type`)
-return p, t;
+CALL gds.betweenness.write(
+	'pokemonTypeGraph',
+	{ writeProperty: 'betweenness' }
+)
+YIELD
+	centralityDistribution,
+	nodePropertiesWritten
+RETURN
+	centralityDistribution.min AS minimumScore,
+	centralityDistribution.mean AS meanScore,
+	nodePropertiesWritten;
                                                                            ////
 ///////////////////////////////////////////////////////////////////////////////

@@ -1,3 +1,3 @@
 // Print the graph
-match (t:`Type`)
-return t;
+match (p: Pokemon)-[r:HAS_TYPE]->(t: Type)
+return p, r, t;

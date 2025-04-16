@@ -5,9 +5,16 @@
 ///////////////////////////////////////////////////////////////////////////////
 //// Demonstrate the mutate mode, results are assigned to the nodes in memory, but not written to the graph
 
-CALL gds.betweenness.mutate('pokemonTypeGraph', { mutateProperty: 'betweenness' })
-YIELD centralityDistribution, nodePropertiesWritten
-RETURN centralityDistribution.min AS minimumScore, centralityDistribution.mean AS meanScore, nodePropertiesWritten.mean AS meanScore
-ORDER BY score DESC
+CALL gds.betweenness.mutate(
+	'pokemonTypeGraph',
+	{ mutateProperty: 'betweenness' }
+)
+YIELD
+	centralityDistribution,
+	nodePropertiesWritten
+RETURN
+	centralityDistribution.min AS minimumScore,
+	centralityDistribution.mean AS meanScore,
+	nodePropertiesWritten AS nodePropertiesWritten
                                                                            ////
 ///////////////////////////////////////////////////////////////////////////////
