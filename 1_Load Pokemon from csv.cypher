@@ -1,3 +1,5 @@
+// Loads and/or creates Pokemon and Type (and relevant relationships)
+
 ///////////////////////////////////////////////////////////////////////////////
 //// Load Pokemon data from .csv
 
@@ -64,46 +66,66 @@ set poke += {
 
 
 ///////////////////////////////////////////////////////////////////////////////
-//// Also create type entities and relationships
+//// Load type data from .csv, then create HAS_TYPE relationships
 
-foreach (t1 IN CASE WHEN `Type 1` <> "" THEN [`Type 1`] ELSE [] END |
-  merge (type1:Type {name: t1})
-  merge (pokemon)-[:HAS_TYPE]->(type1)
-)
-foreach (t2 IN CASE WHEN `Type 2` <> "" THEN [`Type 2`] ELSE [] END |
-  merge (type2:Type {name: t2})
-  merge (pokemon)-[:HAS_TYPE]->(type2)
-);
+LOAD CSV WITH HEADERS FROM 'file:///pokemontypes.csv' AS row
+with row
+merge (n: Type { name: row.`name`});
                                                                            ////
 ///////////////////////////////////////////////////////////////////////////////
 
 
 
 ///////////////////////////////////////////////////////////////////////////////
-//// Create evolution relationships
+//// Assigns p:Pokemon IS_TYPE t:type
+
+// For each type...
+match(t: Type)
+
+// Check every Pokemon's 1st and 2nd type
+match(p: Pokemon)
+where (
+	p.`Type 1` contains t.name
+	OR p.`Type 2` contains t.name
+)
+
+// Create the relationships
+merge (p)-[:HAS_TYPE]->(t);
+                                                                           ////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//// Assigns p:Pokemon EVOLVES_FROM p:Pokemon
 
 // Create EVOLVES_FROM from stage 1 (connects to base)
 // Get var 1
-match (p:Pokemon)
+match (p: Pokemon)
 where (
-	p.`Stage 1 Evolution` = p.name AND		// Is the correct stage of the evol family
-	p.name = p.name							// Not a different member of evol family
+	p.`Stage 1 Evolution` = p.name				// Is the correct stage of the evol family
+	AND p.name = p.name							// Not a different member of evol family
 )
+
 // Get var 2
-match (prev:Pokemon)
-where prev.name = p.`Base Evolution` // gets the correct enitity
+match (prev: Pokemon)
+where prev.name = p.`Base Evolution` 			// gets the correct enitity
+
 // create the relation
 merge (p)-[:EVOLVES_FROM]->(prev);
 
 // Create EVOLVES_FROM from stage 2 (connects to stage 1)
 // Get var 1
-match (p:Pokemon)
+match (p: Pokemon)
 where (
-	p.`Stage 2 Evolution` = p.name AND		// Is the correct stage of the evol family
-	p.name = p.name							// Not a different member of evol family
+	p.`Stage 2 Evolution` = p.name				// Is the correct stage of the evol family
+	AND p.name = p.name							// Not a different member of evol family
 )
-// var 2
-match (prev:Pokemon) where prev.name = p.`Stage 1 Evolution` // gets the correct enitity
+
+// Get var 2
+match (prev: Pokemon)
+where prev.name = p.`Stage 1 Evolution` 		// gets the correct enitity
+
 // create the relation
 merge (p)-[:EVOLVES_FROM]->(prev);
                                                                            ////

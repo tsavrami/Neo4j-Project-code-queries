@@ -1,6 +1,6 @@
 // The big one
 match(n)
-where
+where (
     (n: Pokemon
         AND(
             n.Gen = 'I' OR
@@ -8,6 +8,8 @@ where
             n.Gen = 'III' OR
             n.Gen = 'IV'
         )
-    ) OR (n: Trainer)
-    OR (n: `Trainer Class`)
+    ) OR n: Trainer
+    OR n: `Trainer Class`
+	OR n: Type
+)
 return n

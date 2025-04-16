@@ -1,4 +1,4 @@
-// C:\Users\troys\.Neo4jDesktop\projects\project-984028c9-d18d-4189-9331-1be369289efe
+// Loads and/or creates Trainer and Trainer Class (and relevant relationships)
 
 ///////////////////////////////////////////////////////////////////////////////
 //// Load trainer data from .csv
