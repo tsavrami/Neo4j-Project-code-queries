@@ -1,0 +1,107 @@
+// C:\Users\troys\.Neo4jDesktop\projects\project-984028c9-d18d-4189-9331-1be369289efe
+
+///////////////////////////////////////////////////////////////////////////////
+//// Load trainer data from .csv
+
+LOAD CSV WITH HEADERS FROM 'file:///trainers_reformatted.csv' AS row
+with row
+merge (n: Trainer { name: row.`Trainer Name` })
+set n += {
+    TrainerID: coalesce(trim(row.`Trainer ID`), ""),
+    name: coalesce(trim(row.`Trainer Name`), ""),
+	Gender: coalesce(trim(row.`Gender`), "n"),
+    PokemonHeld: coalesce(trim(row.`Pokemon Held`), ""),
+    AIDifficulty: coalesce(trim(row.`AI Difficulty`), ""),
+    Poke1: coalesce(trim(row.Poke1), ""),
+    Poke2: coalesce(trim(row.Poke2), ""),
+    Poke3: coalesce(trim(row.Poke3), ""),
+    Poke4: coalesce(trim(row.Poke4), ""),
+    Poke5: coalesce(trim(row.Poke5), ""),
+    Poke6: coalesce(trim(row.Poke6), "")
+};
+                                                                           ////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//// Load trainer class from .csv
+
+LOAD CSV WITH HEADERS FROM 'file:///trainerclasses.csv' AS row
+with row
+merge (n: `Trainer Class` { name: row.`name` });
+                                                                           ////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//// Extract trainer class from t, assigns t:Trainer IS_CLASS c:`Trainer Class`
+
+// For every trainer class...
+match (c: `Trainer Class`)
+
+// Check every trainer
+match (t: Trainer)
+where (t.name contains c.name)
+
+// Create the relationships
+merge (t)-[:IS_CLASS]->(c);
+                                                                           ////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//// 
+                                                                           ////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//// 
+                                                                           ////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//// 
+                                                                           ////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//// 
+                                                                           ////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//// 
+                                                                           ////
+///////////////////////////////////////////////////////////////////////////////
