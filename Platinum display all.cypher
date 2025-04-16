@@ -10,6 +10,6 @@ where (
         )
     ) OR n: Trainer
     OR n: `Trainer Class`
-	OR n: Type
+	OR n: `Type`
 )
 return n

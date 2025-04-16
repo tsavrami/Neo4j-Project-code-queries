@@ -31,8 +31,7 @@ with
   coalesce(row.`Stage 1 Evolution`, '') AS `Stage 1 Evolution`,
   coalesce(row.`Stage 2 Evolution`, '') AS `Stage 2 Evolution`,
   coalesce(row.`Flavor text`, '') AS `Flavor text`
-
-merge (poke:Pokemon { name: name })
+merge (poke: Pokemon { name: name })
 set poke += {
   `Dex Number`: `Dex Number`,
   `Gen`: `Gen`,
@@ -59,7 +58,7 @@ set poke += {
   `Stage 1 Evolution`: `Stage 1 Evolution`,
   `Stage 2 Evolution`: `Stage 2 Evolution`,
   `Flavor text`: `Flavor text`
-}
+};
                                                                            ////
 ///////////////////////////////////////////////////////////////////////////////
 
